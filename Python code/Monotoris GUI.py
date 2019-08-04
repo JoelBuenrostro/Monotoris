@@ -9,5 +9,7 @@ readlines() = Read the entire row of data on port.
 
 import serial
 
-arduinoPort = serial.Serial('COM6', 9600, timeout=0.1)
-arduinoData = arduinoPort.read(size=5)
+arduinoPort = serial.Serial('COM6', 9600, timeout=1)
+arduinoData = arduinoPort.readline()
+
+print(arduinoData)
