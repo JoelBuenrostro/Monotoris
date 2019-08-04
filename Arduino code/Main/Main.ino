@@ -1,9 +1,9 @@
 /* 
-   
- Reference:
+Reference:
 
 Arduino:
 Serial.begin() = Sets the data rate in bits per second (baud) for serial data transmission.
+Serial.println() = Prints data to the serial port followed by a carriage return and a newline
 
 Connections:
 Arduino Nano
