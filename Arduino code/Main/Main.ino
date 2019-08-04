@@ -10,13 +10,12 @@
   0 = RX 1 = TX
 
 */
-int baudRate = 9600;
+
 
 void setup() {
-  Serial.begin(baudRate);
-  Serial.println("Serial port open");
+  
 }
 
 void loop() {
-  Serial.println("test");
+  
 }
