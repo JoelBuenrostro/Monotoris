@@ -11,9 +11,9 @@
 
 */
 
-
 void setup() {
-  
+  Serial.begin(9600);
+  Serial.println("Serial port open");
 }
 
 void loop() {
