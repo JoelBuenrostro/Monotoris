@@ -45,7 +45,6 @@ void setup() {
   pinMode(4, INPUT);
   pinMode(5, INPUT);
   sensors.begin();
-  Serial.println("Serial communication open");
 }
 
 void loop() {

@@ -8,15 +8,22 @@ import tkinter as tk
 from tkinter import ttk
 import serial
 
+arduinoPort = serial.Serial('COM4', 9600, timeout=5)
+arduinoData = arduinoPort.readline()
+
 window = tk.Tk()
 user_font = "Arial"
 font_size = 16
-arduinoPort = serial.Serial('COM4', 9600, timeout=5)
-arduinoData = arduinoPort.readline(100)
-
 window.title("Monotoris")
 window.geometry("600x300")
 window.minsize(width=300, height=150)
+
+def update_label():
+    int(arduinoData)
+    label6.config(text=str(arduinoData))
+    window.after(1000, update_label)
+
+
 
 label1 = tk.Label(window, text="Port name : ", font=(user_font, font_size))
 label2 = tk.Label(window, text=arduinoPort.name, font=(user_font, font_size))
