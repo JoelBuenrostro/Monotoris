@@ -53,13 +53,8 @@ void loop() {
   water_level_max = digitalRead(5);
   sensors.requestTemperatures();
   water_temp = sensors.getTempCByIndex(0);
-  Serial.println("Temperature : ");
   Serial.println(water_temp);
-  Serial.println("Water level minimum read : ");
-  Serial.println(water_level_min);
-  Serial.println("Water level maximum read : ");
-  Serial.println(water_level_max);
-  delay(1000);
+  delay(500);
 
   if(water_level_min == 0) {
     digitalWrite(buzzer_pin, LOW);
