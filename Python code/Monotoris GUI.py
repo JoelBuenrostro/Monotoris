@@ -22,8 +22,8 @@ templabel = ttk.Label(mainframe, text="Temperature :")
 
 #Layout
 mainframe.grid(column=0, row=0, sticky=(N, S, E, W))
-portlabel.grid(column=1, row=1, sticky=(N, W), padx=5)
-baudlabel.grid(column=1, row=2, sticky=(E, W), padx=5)
-templabel.grid(column=1, row=3, sticky=(N, S), padx=5)
+portlabel.grid(column=1, row=1, sticky=(N, W), padx=5, pady=5)
+baudlabel.grid(column=1, row=2, sticky=(E, W), padx=5, pady=5)
+templabel.grid(column=1, row=3, sticky=(N, S), padx=5, pady=5)
 
 root.mainloop()
