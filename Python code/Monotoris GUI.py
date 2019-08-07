@@ -19,12 +19,12 @@ root = Tk()
 
 #Widgets
 mainframe = ttk.Frame(root, borderwidth=5, relief="sunken", width=200, height=100, padding=(3, 3, 12, 12))
-portlabel = ttk.Label(mainframe, text="Port :")
-baudlabel = ttk.Label(mainframe, text="Baudrate :")
-templabel = ttk.Label(mainframe, text="Temperature :")
-portentry = ttk.Label(mainframe, text="COM4")
-baudentry = ttk.Label(mainframe, text="9600")
-tempread = ttk.Label(mainframe, text="23") #textvariable=tempdata
+portlabel = ttk.Label(mainframe, text="Port :", font=("Arial", 16))
+baudlabel = ttk.Label(mainframe, text="Baudrate :", font=("Arial", 16))
+templabel = ttk.Label(mainframe, text="Temperature :", font=("Arial", 16))
+portentry = ttk.Label(mainframe, text="COM4", font=("Arial", 16))
+baudentry = ttk.Label(mainframe, text="9600", font=("Arial", 16))
+tempread = ttk.Label(mainframe, text="23", font=("Arial", 16)) #textvariable=tempdata
 
 #Layout
 #Column 0
