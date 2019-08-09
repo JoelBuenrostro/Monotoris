@@ -13,9 +13,12 @@ import serial
 #tempdata = IntVar()
 #tempdata.set(arduinoData)
 
+def closewindow ():
+    root.destroy
 
 #Windows
 root = Tk()
+root.title("Monotoris GUI")
 
 #Widgets
 mainframe = ttk.Frame(root, borderwidth=5, relief="sunken", width=200, height=100, padding=(3, 3, 12, 12))
@@ -25,6 +28,7 @@ templabel = ttk.Label(mainframe, text="Temperature :", font=("Arial", 16))
 portentry = ttk.Label(mainframe, text="COM4", font=("Arial", 16))
 baudentry = ttk.Label(mainframe, text="9600", font=("Arial", 16))
 tempread = ttk.Label(mainframe, text="23", font=("Arial", 16)) #textvariable=tempdata
+closebutton = ttk.Button(mainframe, text='Close', command=closewindow)
 
 #Layout
 #Column 0
@@ -37,5 +41,6 @@ templabel.grid(column=1, row=3, sticky=(N, S), padx=20, pady=5)
 portentry.grid(column=2, row=1, sticky=(N), padx=20, pady=5)
 baudentry.grid(column=2, row=2, sticky=(E, W), padx=20, pady=5)
 tempread.grid(column=2, row=3, sticky=(N, S), padx=20, pady=5)
+closebutton.grid(column=2, row=4, sticky=(S, E), padx=20, pady=5)
 
 root.mainloop()
