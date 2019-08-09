@@ -13,8 +13,8 @@ import serial
 #tempdata = IntVar()
 #tempdata.set(arduinoData)
 
-def closewindow ():
-    root.destroy
+def closewindow():
+    root.destroy()
 
 #Windows
 root = Tk()
