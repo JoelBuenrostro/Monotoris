@@ -28,6 +28,7 @@ templabel = ttk.Label(mainframe, text="Temperature :", font=("Arial", 16))
 portentry = ttk.Label(mainframe, text="COM4", font=("Arial", 16))
 baudentry = ttk.Label(mainframe, text="9600", font=("Arial", 16))
 tempread = ttk.Label(mainframe, text="23", font=("Arial", 16)) #textvariable=tempdata
+timeread = ttk.Label(mainframe, text="Time", font=("Arial", 16))
 closebutton = ttk.Button(mainframe, text='Close', command=closewindow)
 
 #Layout

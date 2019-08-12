@@ -10,6 +10,10 @@ sensors.begin()               = Start up the library.
 sensors.requestTemperatures() = Request to all devices on the bus.
 sensors.getTempByIndex()      = 0 refers to the first IC on the wire.
 
+EEPROM:
+EEPROM.write = Stores values from an analog input to the EEPROM.
+EEPROM.read = Read the EEPROM and send its values to the computer
+
 Arduino:
 Serial.begin()   = Set the data rate in bits per second for serial data transmission.
 Serial.print()   = Prints data to the serial port as human-readable ASCII text.
