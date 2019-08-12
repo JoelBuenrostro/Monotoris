@@ -27,6 +27,7 @@ Arduino Nano
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <EEPROM.h>
 
 #define ONE_WIRE_BUS 3
 
@@ -37,6 +38,9 @@ int buzzer_pin = 2;
 int water_temp = 0;
 int water_level_min = 0;
 int water_level_max = 0;
+int store_time_address = 0;
+
+
 
 void setup() {
   Serial.begin(9600);
@@ -53,8 +57,17 @@ void loop() {
   water_level_max = digitalRead(5);
   sensors.requestTemperatures();
   water_temp = sensors.getTempCByIndex(0);
-  Serial.println(water_temp);
+  Serial.println("Temp : " + water_temp);
   delay(500);
+
+  if(water_level_max == 1) {
+    unsigned long start_time = millis();
+    if(water_level_min == 0) {
+      unsigned long current_time = millis();
+      unsigned long elapsed_time = current_time - start_time / 1000;
+      EEPROM.write(store_time_address, elapsed_time);
+      }
+    }
 
   if(water_level_min == 0) {
     digitalWrite(buzzer_pin, LOW);
@@ -65,6 +78,7 @@ void loop() {
     delay(100);
     digitalWrite(buzzer_pin, HIGH);
     delay(250);
+    Serial.println(EEPROM.read(store_time_address));
     }
     else {
       digitalWrite(buzzer_pin, LOW);
