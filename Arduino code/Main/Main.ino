@@ -33,19 +33,29 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Chrono.h>
+#include <Wire.h>
+#include <DFRobot_RGBLCD.h>
 
 #define ONE_WIRE_BUS 3
+
+const int colorR = 0;
+const int colorG = 0;
+const int colorB  = 255;
 
 OneWire oneWire (ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 Chrono timer(Chrono::SECONDS);
+DFRobot_RGBLCD lcd(16,2);
 
 int buzzer_pin = 2;
 int water_temp = 0;
 int water_level_min = 0;
 int water_level_max = 0;
+int minutes = 0;
 
 void setup() {
+  lcd.init();
+  lcd.setRGB(colorR, colorG, colorB);
   Serial.begin(9600);
   pinMode(buzzer_pin, OUTPUT);
   pinMode(3, INPUT);
@@ -59,9 +69,18 @@ void loop() {
   water_level_max = digitalRead(5);
   sensors.requestTemperatures();
   water_temp = sensors.getTempCByIndex(0);
-  Serial.print("Temp : ");
-  Serial.print(water_temp);
-  Serial.println(" C");
+  lcd.setCursor(0,0);
+  lcd.print("Temp : ");
+  lcd.setCursor(7,0);
+  lcd.print(water_temp);
+  lcd.setCursor(10,0);
+  lcd.print("C");
+  lcd.setCursor(0,1);
+  lcd.print("Time : ");
+  lcd.setCursor(7,1);
+  lcd.print(minutes);
+  lcd.setCursor(10,1);
+  lcd.print("min");
 
   switch (water_level_min) {
     case 0:
@@ -87,9 +106,7 @@ void loop() {
 
   switch (water_level_max) {
     case 0:
-      Serial.print("Time : ");
-      Serial.print(timer.elapsed() / 60);
-      Serial.println(" minutes");
+      minutes = timer.elapsed() / 60;
       break;
     case 1:
       timer.restart();
