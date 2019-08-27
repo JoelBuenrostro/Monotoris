@@ -46,7 +46,6 @@ Chrono timer(Chrono::SECONDS);
 DFRobot_RGBLCD lcd(16,2);
 Sd2Card card;
 SdVolume volume;
-SdFile root;
 File datafile;
 
 int buzzer_pin = 2;
@@ -75,7 +74,11 @@ void setup() {
   pinMode(SS, OUTPUT);
   delay(1000);
   while (!card.init(SPI_HALF_SPEED, chipSelect)) {
-    lcd.print("Initialization failed");
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Initialization");
+    lcd.setCursor(0,1);
+    lcd.print("failed");
     }
   if (!volume.init(card)) {
     lcd.clear();
