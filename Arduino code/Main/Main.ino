@@ -67,11 +67,11 @@ void setup() {
   pinMode(3, INPUT);
   pinMode(4, INPUT);
   pinMode(5, INPUT);
+  pinMode(chipSelect, OUTPUT);
   sensors.begin();
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Initializing SD card");
-  pinMode(SS, OUTPUT);
   delay(1000);
   while (!card.init(SPI_HALF_SPEED, chipSelect)) {
     lcd.clear();
@@ -90,17 +90,16 @@ void setup() {
     }
   lcd.clear();
   datafile = SD.open("datalog.txt", FILE_WRITE);
-  if (! datafile) {
-    lcd.setCursor(0,0);
-    lcd.print("Error opening");
-    lcd.setCursor(0,1);
-    lcd.print("datalog file");
-    delay(5000);
+  if (SD.begin()) {
     lcd.clear();
-    }
+    lcd.setCursor(0,0);
+    lcd.print("SD card is ready");
+    delay(2000);
+    } 
   String dataTitle = "";
   dataTitle += "Wmin,Wmax,Temp,Time";
   datafile.println(dataTitle);
+  lcd.clear();
 }
 
 void loop() {
