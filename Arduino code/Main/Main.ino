@@ -14,7 +14,18 @@
   Chrono timer(Chrono::SECONDS) = Create a Chrono that counts in seconds
   timer.stop()                  = Stops/pauses the chronometer
   timer.elapsed()               = Returns the elapsed time
-  timer.restart()               = Starts/restarts the chronometer 
+  timer.restart()               = Starts/restarts the chronometer
+
+  DFRobot_RGBLCD:
+  DFRobot_RGBLCD lcd(16,2) =
+  lcd.init() =
+  lcd.setRGB(0, 255, 155)
+  lcd.setCursor(3,0)
+  lcd.print("MONOTORIS")
+  lcd.clear()
+  
+  SD:
+  File dataFile = SD.open("datalog.txt", FILE_WRITE) =
 
   Arduino:
   Serial.begin()   = Set the data rate in bits per second for serial data transmission.
@@ -27,7 +38,7 @@
 
   Connections:
   Arduino Nano
-  0=RX 1=TX 2=Buzzer 3=water_temp 4=water_level_min 5=water_level_max 10=SS 11=MOSI 12=MISO 13=SCK
+  0=RX 1=TX 2=Buzzer 3=water_temp 4=water_level_min 5=water_level_max 10=CS 11=MOSI 12=MISO 13=SCK
 */
 
 #include <OneWire.h>
@@ -44,16 +55,13 @@ OneWire oneWire (ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 Chrono timer(Chrono::SECONDS);
 DFRobot_RGBLCD lcd(16,2);
-Sd2Card card;
-SdVolume volume;
-File datafile;
 
+const int chipSelect = 10;
 int buzzer_pin = 2;
 int water_temp = 0;
 int water_level_min = 0;
 int water_level_max = 0;
 int minutes = 0;
-const int chipSelect = 10;
 
 void setup() {
   lcd.init();
@@ -71,45 +79,42 @@ void setup() {
   sensors.begin();
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Initializing SD card");
+  lcd.print("Initializing SD");
   delay(1000);
-  while (!card.init(SPI_HALF_SPEED, chipSelect)) {
-    lcd.clear();
+  lcd.clear();
+  if (!SD.begin(chipSelect)) {
     lcd.setCursor(0,0);
-    lcd.print("Initialization");
+    lcd.print("Card failed or");
     lcd.setCursor(0,1);
-    lcd.print("failed");
-    }
-  if (!volume.init(card)) {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Could not find");
-    lcd.setCursor(0,1);
-    lcd.print("FAT32 partition");
-    delay(1000);
+    lcd.print("not present");
+    while (1);
     }
   lcd.clear();
-  datafile = SD.open("datalog.txt", FILE_WRITE);
-  if (SD.begin()) {
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("SD card is ready");
-    delay(2000);
-    } 
-  String dataTitle = "";
-  dataTitle += "Wmin,Wmax,Temp,Time";
-  datafile.println(dataTitle);
+  lcd.setCursor(0,0);
+  lcd.print("Card initialized");
+  delay(1000);
   lcd.clear();
+  String titleString = "";
+  titleString += String("Wmin,Wmax,Temp,Time");
+  File dataFile = SD.open("datalog.txt", FILE_WRITE);
+  if (dataFile) {
+    dataFile.println(titleString);
+    dataFile.close();
+    Serial.println(titleString);
+    }
+    else {
+      Serial.println("Error opening datalog.txt");
+      }
 }
 
 void loop() {
-  lcd.setRGB(0, 0, 255);
   String dataString = "";
+  lcd.setRGB(0, 0, 255);
   water_level_min = digitalRead(4);
-  dataString += water_level_min;
+  dataString += String(water_level_min);
   dataString += ",";
   water_level_max = digitalRead(5);
-  dataString += water_level_max;
+  dataString += String(water_level_max);
   dataString += ",";
   sensors.requestTemperatures();
   water_temp = sensors.getTempCByIndex(0);
@@ -117,7 +122,7 @@ void loop() {
   lcd.print("Temp : ");
   lcd.setCursor(7,0);
   lcd.print(water_temp);
-  dataString += water_temp;
+  dataString += String(water_temp);
   dataString += ",";
   lcd.setCursor(10,0);
   lcd.print("C");
@@ -125,11 +130,20 @@ void loop() {
   lcd.print("Time : ");
   lcd.setCursor(7,1);
   lcd.print(minutes);
-  dataString += minutes;
+  dataString += String(minutes);
+  dataString += ",";
   lcd.setCursor(10,1);
   lcd.print("min");
-  datafile.println(dataString);
   delay(1000);
+  File dataFile = SD.open("datalog.txt", FILE_WRITE);
+  if (dataFile) {
+    dataFile.println(dataString);
+    dataFile.close();
+    Serial.println(dataString);
+    }
+    else {
+      Serial.println("Error opening datalog.txt");
+      }
 
   switch (water_level_min) {
     case 0:
@@ -170,7 +184,7 @@ void loop() {
       lcd.clear();
       lcd.setCursor(0,1);
       lcd.print("Water max level");
-      delay(1000);
+      delay(500);
       lcd.clear();
       break;
   }
