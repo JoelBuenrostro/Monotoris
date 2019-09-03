@@ -17,15 +17,15 @@
   timer.restart()               = Starts/restarts the chronometer
 
   DFRobot_RGBLCD:
-  DFRobot_RGBLCD lcd(16,2) =
-  lcd.init() =
-  lcd.setRGB(0, 255, 155)
-  lcd.setCursor(3,0)
-  lcd.print("MONOTORIS")
-  lcd.clear()
-  
+  DFRobot_RGBLCD lcd() = Set the dimensions of the LCD display
+  lcd.init()           = Start the display
+  lcd.setRGB()         = Set the color of the background in RGB format
+  lcd.setCursor()      = Define the position to print
+  lcd.print()          = Write one or a set of characters
+  lcd.clear()          = Clear the display
+
   SD:
-  File dataFile = SD.open("datalog.txt", FILE_WRITE) =
+  SD.open() = Open a File in the SD root
 
   Arduino:
   Serial.begin()   = Set the data rate in bits per second for serial data transmission.
@@ -38,7 +38,8 @@
 
   Connections:
   Arduino Nano
-  0=RX 1=TX 2=Buzzer 3=water_temp 4=water_level_min 5=water_level_max 10=CS 11=MOSI 12=MISO 13=SCK
+  D0=RX D1=TX D2=Buzzer D3=water_temp D4=water_level_min D5=water_level_max D10=CS D11=MOSI D12=MISO D13=SCK
+  A4=SDA A5=SCL
 */
 
 #include <OneWire.h>
@@ -54,7 +55,7 @@
 OneWire oneWire (ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 Chrono timer(Chrono::SECONDS);
-DFRobot_RGBLCD lcd(16,2);
+DFRobot_RGBLCD lcd(16, 2);
 
 const int chipSelect = 10;
 int buzzer_pin = 2;
@@ -66,7 +67,7 @@ int minutes = 0;
 void setup() {
   lcd.init();
   lcd.setRGB(0, 255, 155);
-  lcd.setCursor(3,0);
+  lcd.setCursor(3, 0);
   lcd.print("MONOTORIS");
   delay(5000);
   lcd.setRGB(0, 0, 255);
@@ -78,19 +79,19 @@ void setup() {
   pinMode(chipSelect, OUTPUT);
   sensors.begin();
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("Initializing SD");
   delay(1000);
   lcd.clear();
   if (!SD.begin(chipSelect)) {
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("Card failed or");
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("not present");
     while (1);
-    }
+  }
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("Card initialized");
   delay(1000);
   lcd.clear();
@@ -101,10 +102,10 @@ void setup() {
     dataFile.println(titleString);
     dataFile.close();
     Serial.println(titleString);
-    }
-    else {
-      Serial.println("Error opening datalog.txt");
-      }
+  }
+  else {
+    Serial.println("Error opening datalog.txt");
+  }
 }
 
 void loop() {
@@ -118,21 +119,20 @@ void loop() {
   dataString += ",";
   sensors.requestTemperatures();
   water_temp = sensors.getTempCByIndex(0);
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("Temp : ");
-  lcd.setCursor(7,0);
+  lcd.setCursor(7, 0);
   lcd.print(water_temp);
   dataString += String(water_temp);
   dataString += ",";
-  lcd.setCursor(10,0);
+  lcd.setCursor(10, 0);
   lcd.print("C");
-  lcd.setCursor(0,1);
+  lcd.setCursor(0, 1);
   lcd.print("Time : ");
-  lcd.setCursor(7,1);
+  lcd.setCursor(7, 1);
   lcd.print(minutes);
   dataString += String(minutes);
-  dataString += ",";
-  lcd.setCursor(10,1);
+  lcd.setCursor(10, 1);
   lcd.print("min");
   delay(1000);
   File dataFile = SD.open("datalog.txt", FILE_WRITE);
@@ -140,10 +140,10 @@ void loop() {
     dataFile.println(dataString);
     dataFile.close();
     Serial.println(dataString);
-    }
-    else {
-      Serial.println("Error opening datalog.txt");
-      }
+  }
+  else {
+    Serial.println("Error opening datalog.txt");
+  }
 
   switch (water_level_min) {
     case 0:
@@ -164,7 +164,7 @@ void loop() {
       timer.stop();
       lcd.clear();
       lcd.setRGB(255, 0, 0);
-      lcd.setCursor(0,0);
+      lcd.setCursor(0, 0);
       lcd.print("Water min level");
       lcd.setCursor(0, 1);
       lcd.print("Refill water");
@@ -182,7 +182,7 @@ void loop() {
     case 1:
       timer.restart();
       lcd.clear();
-      lcd.setCursor(0,1);
+      lcd.setCursor(0, 1);
       lcd.print("Water max level");
       delay(500);
       lcd.clear();
