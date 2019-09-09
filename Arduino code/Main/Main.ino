@@ -97,14 +97,14 @@ void setup() {
   lcd.clear();
   String titleString = "";
   titleString += String("Wmin,Wmax,Temp,Time");
-  File dataFile = SD.open("datalog.txt", FILE_WRITE);
+  File dataFile = SD.open("datalog.csv", FILE_WRITE);
   if (dataFile) {
     dataFile.println(titleString);
     dataFile.close();
     Serial.println(titleString);
   }
   else {
-    Serial.println("Error opening datalog.txt");
+    Serial.println("Error opening datalog.csv");
   }
 }
 
@@ -135,14 +135,14 @@ void loop() {
   lcd.setCursor(10, 1);
   lcd.print("min");
   delay(1000);
-  File dataFile = SD.open("datalog.txt", FILE_WRITE);
+  File dataFile = SD.open("datalog.csv", FILE_WRITE);
   if (dataFile) {
     dataFile.println(dataString);
     dataFile.close();
     Serial.println(dataString);
   }
   else {
-    Serial.println("Error opening datalog.txt");
+    Serial.println("Error opening datalog.csv");
   }
 
   switch (water_level_min) {
