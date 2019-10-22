@@ -85,7 +85,7 @@ void setup() {
   lcd.clear();
   if (!SD.begin(chipSelect)) {
     lcd.setCursor(0, 0);
-    lcd.print("Card failed or");
+    lcd.print("SDCard failed or");
     lcd.setCursor(0, 1);
     lcd.print("not present");
     while (1);
@@ -120,21 +120,21 @@ void loop() {
   sensors.requestTemperatures();
   water_temp = sensors.getTempCByIndex(0);
   lcd.setCursor(0, 0);
-  lcd.print("Temp : ");
-  lcd.setCursor(7, 0);
+  lcd.print("Temp: ");
+  lcd.setCursor(6, 0);
   lcd.print(water_temp);
   dataString += String(water_temp);
   dataString += ",";
-  lcd.setCursor(10, 0);
+  lcd.setCursor(9, 0);
   lcd.print("C");
   lcd.setCursor(0, 1);
-  lcd.print("Time : ");
-  lcd.setCursor(7, 1);
+  lcd.print("Time: ");
+  lcd.setCursor(6, 1);
   lcd.print(minutes);
   dataString += String(minutes);
-  lcd.setCursor(10, 1);
+  lcd.setCursor(9, 1);
   lcd.print("min");
-  delay(1000);
+  delay(4000);
   File dataFile = SD.open("datalog.csv", FILE_WRITE);
   if (dataFile) {
     dataFile.println(dataString);
