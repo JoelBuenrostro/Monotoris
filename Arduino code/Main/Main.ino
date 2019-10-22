@@ -134,7 +134,7 @@ void loop() {
   dataString += String(minutes);
   lcd.setCursor(9, 1);
   lcd.print("min");
-  delay(4000);
+  delay(9000);
   File dataFile = SD.open("datalog.csv", FILE_WRITE);
   if (dataFile) {
     dataFile.println(dataString);
