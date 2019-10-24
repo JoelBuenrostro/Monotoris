@@ -25,7 +25,8 @@
   lcd.clear()          = Clear the display
 
   SD:
-  SD.open() = Open a File in the SD root
+  SD.open()   = Open a File in the SD root
+  SD.remove() = Remove a file from the SD cards
 
   Arduino:
   Serial.begin()   = Set the data rate in bits per second for serial data transmission.
@@ -69,6 +70,7 @@ void setup() {
   lcd.setRGB(0, 255, 155);
   lcd.setCursor(3, 0);
   lcd.print("MONOTORIS");
+  SD.remove("DATALOG.CSV");
   delay(5000);
   lcd.setRGB(0, 0, 255);
   Serial.begin(9600);
@@ -97,7 +99,7 @@ void setup() {
   lcd.clear();
   String titleString = "";
   titleString += String("Wmin,Wmax,Temp,Time");
-  File dataFile = SD.open("datalog.csv", FILE_WRITE);
+  File dataFile = SD.open("DATALOG.CSV", FILE_WRITE);
   if (dataFile) {
     dataFile.println(titleString);
     dataFile.close();
@@ -125,17 +127,17 @@ void loop() {
   lcd.print(water_temp);
   dataString += String(water_temp);
   dataString += ",";
-  lcd.setCursor(9, 0);
+  lcd.setCursor(13, 0);
   lcd.print("C");
   lcd.setCursor(0, 1);
   lcd.print("Time: ");
   lcd.setCursor(6, 1);
   lcd.print(minutes);
   dataString += String(minutes);
-  lcd.setCursor(9, 1);
+  lcd.setCursor(13, 1);
   lcd.print("min");
-  delay(9000);
-  File dataFile = SD.open("datalog.csv", FILE_WRITE);
+  delay(4000);
+  File dataFile = SD.open("DATALOG.CSV", FILE_WRITE);
   if (dataFile) {
     dataFile.println(dataString);
     dataFile.close();
@@ -184,7 +186,7 @@ void loop() {
       lcd.clear();
       lcd.setCursor(0, 1);
       lcd.print("Water max level");
-      delay(500);
+      delay(1000);
       lcd.clear();
       break;
   }
